@@ -75,6 +75,7 @@ export default function App() {
   const [layout, setLayout] = useState<PackResult | null>(null);
   const [view, setView] = useState<'assembly' | 'plates'>('assembly');
   const packTimer = useRef<number>();
+  const packSeq = useRef(0); // only the newest pack request may set the layout
 
   const [connType, setConnType] = useState<ConnectorType | 'none'>('peg');
   const [clearance, setClearance] = useState<Record<ConnectorType, number>>(DEFAULT_CLEARANCE);
@@ -99,6 +100,7 @@ export default function App() {
   // any edit to the planes invalidates the last cut
   const editSpecs = (next: PlaneSpec[]) => {
     setSpecs(next); setParts(null); setPins([]); setConnectors(null); setActiveConn(null); setLayout(null); setView('assembly');
+    invalidatePack();
   };
 
   const settingsFor = (type = connType, clr = clearance): ConnectorSettings =>
@@ -141,9 +143,16 @@ export default function App() {
   };
 
   /** Orient every part and pack onto plates (in the worker). */
+  /** Drop any scheduled or in-flight pack: its parts or bed are out of date. */
+  const invalidatePack = () => {
+    window.clearTimeout(packTimer.current);
+    return ++packSeq.current;
+  };
   const doPack = async (ps: Part[], pn: Part[], b = bed, g = gap, m = margin) => {
+    const seq = invalidatePack();
     setLayout(null);
     const res = await call<'pack'>({ type: 'pack', meshes: [...ps, ...pn].map((p) => p.mesh), bed: b, gap: g, margin: m });
+    if (seq !== packSeq.current) return;
     if (res.type === 'error') { setError(res.message); return; }
     setLayout(res.result);
   };

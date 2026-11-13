@@ -30,14 +30,16 @@ function MeshView({ mesh, color, offset = [0, 0, 0], opacity = 1 }:
   );
 }
 
-function PlaneView({ plane, size, active }: { plane: Plane; size: number; active: boolean }) {
+function PlaneView({ plane, size, active, center }: { plane: Plane; size: number; active: boolean; center: Vec3 }) {
   const { position, quaternion } = useMemo(() => {
     const n = new THREE.Vector3(...plane.normal);
+    const c = new THREE.Vector3(...center);
     return {
-      position: n.clone().multiplyScalar(plane.offset),
+      // centre the square on the model: project the model centre onto the plane
+      position: c.clone().addScaledVector(n, plane.offset - n.dot(c)),
       quaternion: new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), n),
     };
-  }, [plane]);
+  }, [plane, center]);
   return (
     <group position={position} quaternion={quaternion}>
       <mesh>
@@ -147,7 +149,7 @@ export function Viewer({ model, bbox, bed, previewPlanes, activePlane, parts, cu
       {marker && <Marker {...marker} offset={explodeAt(marker.at, cutPlanes, explode, true)} />}
 
       {previewPlanes.map((pl, i) => (!parts || activePlane === i) && (
-        <PlaneView key={i} plane={pl} active={activePlane === i} size={planeSize(bbox, pl)} />
+        <PlaneView key={i} plane={pl} active={activePlane === i} size={planeSize(bbox, pl)} center={center} />
       ))}
 
       <GizmoHelper alignment="bottom-right" margin={[70, 70]}>
