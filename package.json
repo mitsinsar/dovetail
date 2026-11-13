@@ -1,16 +1,24 @@
 {
-  "name": "splitstl",
+  "name": "dovetail",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Split large STL files into printable parts with pegs, dowels or dovetails, packed onto plates for Bambu Studio, OrcaSlicer and PrusaSlicer. Runs entirely in the browser.",
+  "license": "MIT",
+  "type": "module",
+  "keywords": [
+    "3d-printing",
+    "stl",
+    "3mf",
+    "splitter",
+    "bambu-studio",
+    "orcaslicer",
+    "prusaslicer",
+    "manifold"
+  ],
   "scripts": {
     "test": "tsx test/ops.test.ts && tsx test/autosplit.test.ts && tsx test/connectors.test.ts && tsx test/pack.test.ts && tsx test/slicers.test.ts",
     "dev": "vite",
     "build": "tsc --noEmit && vite build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
@@ -28,6 +36,5 @@
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^5.4.21"
-  },
-  "type": "module"
+  }
 }

@@ -40,7 +40,7 @@ export function write3MF(parts: (Placed | ProjectObject)[], opts: Write3MFOption
       : `<item objectid="${id}"/>`);
   });
 
-  const meta = { Application: 'SplitSTL', ...opts.metadata };
+  const meta = { Application: 'Dovetail', ...opts.metadata };
   const model = `<?xml version="1.0" encoding="UTF-8"?>
 <model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">
 ${Object.entries(meta).map(([k, v]) => `<metadata name="${escapeXml(k)}">${escapeXml(v)}</metadata>`).join('\n')}

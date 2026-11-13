@@ -34,7 +34,7 @@ export function writeSTL(mesh: IndexedMesh, name = 'part'): ArrayBuffer {
   const n = ix.length / 3;
   const buf = new ArrayBuffer(84 + n * 50);
   const dv = new DataView(buf);
-  const header = new TextEncoder().encode(`SplitSTL ${name}`.slice(0, 80));
+  const header = new TextEncoder().encode(`Dovetail ${name}`.slice(0, 80));
   new Uint8Array(buf, 0, header.length).set(header);
   dv.setUint32(80, n, true);
   let o = 84;

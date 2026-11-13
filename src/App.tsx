@@ -278,7 +278,7 @@ export default function App() {
       onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) onFile(f); }}>
       <aside className="panel">
         <header>
-          <h1>SplitSTL</h1>
+          <h1>Dovetail</h1>
           <span className="tag">v0.5</span>
         </header>
 
