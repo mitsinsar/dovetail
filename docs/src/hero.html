@@ -1,0 +1,57 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style.css">
+<style>
+  #frame { width: 1280px; height: 640px; padding: 56px 64px; }
+  .mark { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 52px; height: 52px; }
+  h1 { font-size: 56px; line-height: 1; margin: 0; letter-spacing: -.025em; color: #fff; font-weight: 800; }
+  .tagline { font-size: 21px; color: var(--text); margin: 18px 0 0; max-width: 820px; line-height: 1.4; }
+  .tagline b { color: #fff; font-weight: 600; }
+  .chips { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+  .chip { font-size: 13px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); background: var(--panel); }
+  .chip.hot { color: var(--accent); border-color: rgba(255,90,54,.5); }
+  .strip { position: absolute; left: 64px; right: 64px; bottom: 40px; display: flex; align-items: flex-end; gap: 0; }
+  .stage { display: flex; flex-direction: column; gap: 10px; }
+  .crop { background-repeat: no-repeat; border-radius: 10px; border: 1px solid var(--line); background-color: #12151b; }
+  .cap { font-size: 13px; color: var(--dim); }
+  .cap b { color: var(--text); font-weight: 600; margin-right: 6px; }
+  .arrow { width: 56px; align-self: center; margin-bottom: 40px; text-align: center; }
+  .side { position: absolute; right: 64px; top: 60px; width: 380px; }
+</style>
+<div id="frame">
+  <div class="mark">
+    <svg class="logo" viewBox="0 0 44 44" aria-hidden="true">
+      <rect x="1" y="1" width="42" height="42" rx="10" fill="#171b21" stroke="#262c35"/>
+      <path d="M8 10 H20 V18 L26 16 V28 L20 26 V34 H8 Z" fill="#4fb3bf"/>
+      <path d="M22 10 H36 V34 H22 V26.6 L27.4 28.6 V15.4 L22 17.4 Z" fill="#ff5a36"/>
+    </svg>
+    <h1>Dovetail</h1>
+  </div>
+  <p class="tagline">Split 3D models that are <b>too big for your printer</b> into parts that fit, joined with <b>pegs, dowels or dovetails</b>, packed onto plates for your slicer.</p>
+  <div class="chips">
+    <span class="chip hot">Runs in your browser</span>
+    <span class="chip">Nothing uploaded</span>
+    <span class="chip">Bambu Studio</span>
+    <span class="chip">OrcaSlicer</span>
+    <span class="chip">PrusaSlicer</span>
+    <span class="chip">Cura</span>
+  </div>
+
+  <div class="strip">
+    <div class="stage">
+      <div class="crop" style="width:190px;height:282px;background-image:url(../images/screenshots/02-loaded.png);background-size:497px auto;background-position:-204px -8px"></div>
+      <div class="cap"><b>1</b>520 mm, too tall</div>
+    </div>
+    <div class="arrow"><svg width="36" height="14"><path d="M0 7 H30 M24 1 L32 7 L24 13" stroke="#7f8896" stroke-width="2" fill="none"/></svg></div>
+    <div class="stage">
+      <div class="crop" style="width:190px;height:282px;background-image:url(../images/screenshots/03-auto-split.png);background-size:497px auto;background-position:-204px -8px"></div>
+      <div class="cap"><b>2</b>Auto-split + pegs</div>
+    </div>
+    <div class="arrow"><svg width="36" height="14"><path d="M0 7 H30 M24 1 L32 7 L24 13" stroke="#7f8896" stroke-width="2" fill="none"/></svg></div>
+    <div class="stage">
+      <div class="crop" style="width:596px;height:282px;background-image:url(../images/screenshots/04-plates.png);background-size:817px auto;background-position:-210px -28px"></div>
+      <div class="cap"><b>3</b>Oriented and packed on 3 plates, one project file</div>
+    </div>
+  </div>
+</div>

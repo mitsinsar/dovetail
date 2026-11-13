@@ -17,7 +17,10 @@
   "scripts": {
     "test": "tsx test/ops.test.ts && tsx test/autosplit.test.ts && tsx test/connectors.test.ts && tsx test/pack.test.ts && tsx test/slicers.test.ts",
     "dev": "vite",
-    "build": "tsc --noEmit && vite build"
+    "build": "tsc --noEmit && vite build",
+    "docs:screenshots": "node scripts/docs/screenshots.mjs",
+    "docs:visuals": "tsx scripts/docs/profile.ts && node scripts/docs/render.mjs",
+    "demo:model": "tsx scripts/make-demo.ts demo/rook.stl"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
@@ -33,6 +36,7 @@
     "@types/react-dom": "^18.3.7",
     "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "playwright-core": "^1.49.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^5.4.21"

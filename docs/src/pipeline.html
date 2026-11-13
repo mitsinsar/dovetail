@@ -1,0 +1,94 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style.css">
+<style>
+  #frame { width: 1280px; padding: 44px 48px 40px; }
+  .steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 28px; position: relative; }
+  .step { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 14px 16px; position: relative; }
+  .step .n { position: absolute; top: 12px; right: 14px; font-size: 12px; color: var(--dim); }
+  .step svg { display: block; height: 72px; width: 100%; margin-bottom: 10px; }
+  .step h3 { margin: 0 0 4px; font-size: 16px; color: #fff; }
+  .step p { margin: 0; font-size: 13px; color: var(--dim); line-height: 1.4; }
+  .step code { font-size: 12px; color: var(--text); }
+  .step + .step::before { content: ""; position: absolute; left: -14px; top: 52px; width: 14px; height: 2px; background: var(--line); }
+  .rail { margin-top: 18px; display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--dim); }
+  .rail .bar { flex: 1; height: 1px; background: var(--line); }
+  .pill { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; background: var(--panel); }
+  .pill b { color: var(--text); font-weight: 600; }
+</style>
+<div id="frame">
+  <div class="eyebrow">How it works</div>
+  <div class="title">From one oversized STL to print-ready plates</div>
+  <div class="sub">Six steps, all in your browser. The geometry runs on manifold-3d (WebAssembly) in a Web Worker, so the page stays responsive and your file never leaves your machine.</div>
+
+  <div class="steps">
+    <div class="step"><span class="n mono">01</span>
+      <svg viewBox="0 0 160 72">
+        <path d="M58 6 H92 L106 20 V66 H58 Z" fill="#12151b" stroke="#7f8896" stroke-width="2"/>
+        <path d="M92 6 V20 H106" fill="none" stroke="#7f8896" stroke-width="2"/>
+        <text x="82" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#d7dde5">STL</text>
+      </svg>
+      <h3>Load</h3>
+      <p>Binary or ASCII STL, welded into a solid. Pick mm, cm, inch or µm, or type the real size.</p>
+    </div>
+    <div class="step"><span class="n mono">02</span>
+      <svg viewBox="0 0 160 72">
+        <rect x="34" y="14" width="92" height="52" fill="none" stroke="#7f8896" stroke-width="2" stroke-dasharray="4 4"/>
+        <rect x="50" y="4" width="34" height="62" rx="3" fill="#4fb3bf" opacity=".9"/>
+        <path d="M44 14 V8 M44 66 V72" stroke="#e06c75" stroke-width="2"/>
+        <text x="132" y="40" font-size="11" fill="#7f8896">bed</text>
+      </svg>
+      <h3>Fit check</h3>
+      <p>Your printer preset sets the bed. Margin is kept free; anything bigger is flagged <span style="color:#e06c75">too big</span>.</p>
+    </div>
+    <div class="step"><span class="n mono">03</span>
+      <svg viewBox="0 0 160 72">
+        <rect x="56" y="4" width="48" height="64" rx="4" fill="#3a4150"/>
+        <path d="M40 28 L120 22" stroke="#ff5a36" stroke-width="2.5"/>
+        <path d="M40 48 L120 48" stroke="#ff5a36" stroke-width="2.5"/>
+        <circle cx="40" cy="28" r="3" fill="#ff5a36"/><circle cx="40" cy="48" r="3" fill="#ff5a36"/>
+      </svg>
+      <h3>Split</h3>
+      <p>Auto-split places cuts where the cross-section is small. Add or tilt planes by hand.</p>
+    </div>
+    <div class="step"><span class="n mono">04</span>
+      <svg viewBox="0 0 160 72">
+        <rect x="40" y="6" width="80" height="26" rx="3" fill="#9b7fd1"/>
+        <rect x="58" y="32" width="8" height="12" fill="#9b7fd1"/><rect x="94" y="32" width="8" height="12" fill="#9b7fd1"/>
+        <rect x="40" y="42" width="80" height="26" rx="3" fill="#e8a33d"/>
+        <rect x="57" y="42" width="10" height="13" fill="#12151b"/><rect x="93" y="42" width="10" height="13" fill="#12151b"/>
+      </svg>
+      <h3>Join</h3>
+      <p>Pegs, dowels or dovetails go on every cut face, sized to fit, with clearance per side.</p>
+    </div>
+    <div class="step"><span class="n mono">05</span>
+      <svg viewBox="0 0 160 72">
+        <path d="M30 60 H130" stroke="#3a4150" stroke-width="2"/>
+        <path d="M44 60 L62 22 L80 60 Z" fill="#6cbf5a" opacity=".35" stroke="#6cbf5a" stroke-dasharray="3 3"/>
+        <path d="M92 60 H130 L111 26 Z" fill="#6cbf5a"/>
+        <path d="M82 36 Q90 26 98 34" stroke="#d7dde5" stroke-width="1.6" fill="none" marker-end="url(#a)"/>
+        <defs><marker id="a" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d7dde5"/></marker></defs>
+      </svg>
+      <h3>Orient</h3>
+      <p>Each part is laid flat-side down: most bed contact, least overhang, low height.</p>
+    </div>
+    <div class="step"><span class="n mono">06</span>
+      <svg viewBox="0 0 160 72">
+        <rect x="22" y="8" width="54" height="58" rx="3" fill="none" stroke="#3a4150" stroke-width="2"/>
+        <rect x="84" y="8" width="54" height="58" rx="3" fill="none" stroke="#3a4150" stroke-width="2"/>
+        <rect x="28" y="14" width="26" height="30" rx="2" fill="#4fb3bf"/><rect x="58" y="14" width="12" height="46" rx="2" fill="#e8a33d"/>
+        <rect x="28" y="48" width="26" height="12" rx="2" fill="#e06c75"/>
+        <circle cx="104" cy="30" r="14" fill="#9b7fd1"/><rect x="122" y="14" width="10" height="20" rx="2" fill="#56a0e0"/>
+      </svg>
+      <h3>Pack &amp; export</h3>
+      <p>Parts nest on real footprints across plates, then export as one slicer project.</p>
+    </div>
+  </div>
+
+  <div class="rail">
+    <span class="pill"><b>Bambu Studio</b> / <b>OrcaSlicer</b>: one 3MF, plates set up</span>
+    <span class="pill"><b>PrusaSlicer 2.9+</b>: one 3MF, beds set up</span>
+    <span class="pill"><b>Cura / other</b>: zip, one 3MF per plate</span>
+    <span class="pill">or a plain <b>STL zip</b></span>
+  </div>
+</div>

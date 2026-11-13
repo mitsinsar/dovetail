@@ -1,0 +1,78 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style.css">
+<script src="rook-profile.js"></script>
+<style>
+  #frame { width: 1280px; padding: 44px 48px 36px; }
+  .legend { display: flex; gap: 20px; font-size: 13px; color: var(--dim); margin-top: 12px; }
+  .legend i { display: inline-block; width: 18px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+  .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 6px; }
+  .note { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 13px; color: var(--dim); }
+  .note b { display: block; color: #fff; font-size: 14px; margin-bottom: 4px; }
+</style>
+<div id="frame">
+  <div class="eyebrow">Auto-split</div>
+  <div class="title">Cuts go where the model is thin, not where a grid says</div>
+  <div class="sub">For each axis that's too long for the bed, Dovetail slices the model at 240 positions and records the cross-section area. A dynamic program then picks the cheapest set of cuts that keeps every segment between <span class="mono">min part</span> and the bed length. Below: the 520&nbsp;mm demo rook on a 256&nbsp;mm bed.</div>
+  <svg id="chart" width="1184" height="380" viewBox="0 0 1184 380" style="margin-top:18px"></svg>
+  <div class="notes">
+    <div class="note"><b>Cost = face area</b>A smaller cut face means less to glue and fewer connectors. Cutting through empty space is free.</div>
+    <div class="note"><b>+ edge penalty</b>Cuts just beside a sudden change in the profile (the band on the tower here) would leave slivers, so they cost extra.</div>
+    <div class="note"><b>+ a pull toward even spacing</b>Among equal options, parts of similar size win. Room for protruding pegs is reserved so parts still fit the bed.</div>
+  </div>
+</div>
+<script>
+const { lo, hi, areas } = window.PROFILE;
+const W = 1184, H = 380, L = 64, R = 24, T = 92, B = 52;
+const x = (z) => L + ((z - lo) / (hi - lo)) * (W - L - R);
+const maxA = Math.max(...areas);
+const y = (a) => H - B - (a / maxA) * (H - T - B);
+const n = areas.length - 1, h = (hi - lo) / n;
+const minPart = 20, win = Math.max(1, Math.round(minPart / h));
+const base = areas.map((a, i) => {
+  let edge = 0;
+  for (let d = -win; d <= win; d++) { const j = i + d; if (j >= 0 && j <= n) edge = Math.max(edge, Math.abs(areas[j] - a)); }
+  return a / maxA + (edge / maxA) * 0.8;
+});
+const maxB = Math.max(...base);
+const yb = (c) => H - B - (c / maxB) * (H - T - B);
+const cuts = [169, 346.7], uniform = [173.3, 346.7], maxSeg = 234;
+const pts = areas.map((a, i) => `${x(lo + i * h).toFixed(1)},${y(a).toFixed(1)}`);
+const costPts = base.map((c, i) => `${x(lo + i * h).toFixed(1)},${yb(c).toFixed(1)}`);
+let s = '';
+// grid + axis
+for (let z = 0; z <= hi; z += 100) s += `<line x1="${x(z)}" x2="${x(z)}" y1="${T - 6}" y2="${H - B}" stroke="#262c35"/><text x="${x(z)}" y="${H - B + 20}" text-anchor="middle" font-size="12" fill="#7f8896" class="mono">${z}</text>`;
+s += `<text x="${W - R}" y="${H - 8}" text-anchor="end" font-size="12" fill="#7f8896">Z (mm)</text>`;
+s += `<text x="${L - 12}" y="${T + 4}" text-anchor="end" font-size="12" fill="#7f8896">area</text>`;
+s += `<line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="#3a4150"/>`;
+// segments (parts) as coloured bands on top
+const edges = [lo, ...cuts, hi], cols = ['#4fb3bf', '#e8a33d', '#9b7fd1'], names = ['Base', 'Tower', 'Crown'];
+edges.slice(0, -1).forEach((a, i) => {
+  const b = edges[i + 1];
+  s += `<rect x="${x(a) + 1}" y="${T - 62}" width="${x(b) - x(a) - 2}" height="26" rx="6" fill="${cols[i]}" opacity=".18" stroke="${cols[i]}" stroke-opacity=".6"/>`;
+  s += `<text x="${(x(a) + x(b)) / 2}" y="${T - 44}" text-anchor="middle" font-size="13" fill="#d7dde5"><tspan font-weight="600">${names[i]}</tspan><tspan fill="#7f8896" class="mono">  ${(b - a).toFixed(1)} mm</tspan></text>`;
+});
+s += `<text x="${L}" y="${T - 70}" font-size="12" fill="#7f8896">each part ≤ ${maxSeg} mm (256 bed − 2×2 margin − 18 peg reserve)</text>`;
+// area fill + line
+s += `<polygon points="${x(lo)},${H - B} ${pts.join(' ')} ${x(hi)},${H - B}" fill="#4fb3bf" opacity=".14"/>`;
+s += `<polyline points="${pts.join(' ')}" fill="none" stroke="#4fb3bf" stroke-width="2"/>`;
+s += `<polyline points="${costPts.join(' ')}" fill="none" stroke="#e8a33d" stroke-width="1.5" stroke-dasharray="5 4" opacity=".9"/>`;
+// uniform positions
+uniform.forEach((z) => { s += `<line x1="${x(z)}" x2="${x(z)}" y1="${T}" y2="${H - B}" stroke="#7f8896" stroke-dasharray="2 4"/>`; });
+// chosen cuts
+cuts.forEach((z) => {
+  s += `<line x1="${x(z)}" x2="${x(z)}" y1="${T - 30}" y2="${H - B}" stroke="#ff5a36" stroke-width="2.5"/>`;
+  s += `<rect x="${x(z) - 34}" y="${H - B - 28}" width="68" height="20" rx="4" fill="#ff5a36"/><text x="${x(z)}" y="${H - B - 14}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" class="mono">${z}</text>`;
+});
+// annotations
+s += `<text x="${x(173.3) + 10}" y="${T + 2}" font-size="12" fill="#d7dde5">moved 4.3 mm below the even split (173.3)</text>`;
+s += `<text x="${x(173.3) + 10}" y="${T + 18}" font-size="12" fill="#7f8896">to stay clear of the band at 190 mm</text>`;
+s += `<text x="${x(346.7) + 10}" y="${T + 2}" font-size="12" fill="#d7dde5">stays on the even split:</text>`;
+s += `<text x="${x(346.7) + 10}" y="${T + 18}" font-size="12" fill="#7f8896">thin tower, calm profile</text>`;
+document.getElementById('chart').innerHTML = s;
+document.querySelector('.sub').insertAdjacentHTML('afterend', `<div class="legend">
+  <span><i style="background:#4fb3bf"></i>cross-section area</span>
+  <span><i style="background:#e8a33d"></i>cut cost (area + edge penalty)</span>
+  <span><i style="background:#7f8896"></i>even grid</span>
+  <span><i style="background:#ff5a36"></i>chosen cut</span></div>`);
+</script>

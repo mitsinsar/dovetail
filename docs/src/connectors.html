@@ -1,0 +1,114 @@
+<!doctype html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style.css">
+<style>
+  #frame { width: 1280px; padding: 44px 48px 40px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 18px 16px; }
+  .card h3 { margin: 0; font-size: 18px; color: #fff; display: flex; justify-content: space-between; align-items: baseline; }
+  .card h3 span { font-size: 12px; color: var(--accent); font-weight: 600; }
+  .card svg { display: block; margin: 14px auto 12px; }
+  .card p { margin: 0; font-size: 13px; color: var(--dim); }
+  .card ul { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: var(--dim); }
+  .card li { margin: 2px 0; }
+  .card b { color: var(--text); font-weight: 600; }
+  .coupon { margin-top: 16px; display: flex; gap: 22px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; }
+  .coupon p { margin: 0; font-size: 13px; color: var(--dim); }
+  .coupon b { color: #fff; }
+</style>
+<div id="frame">
+  <div class="eyebrow">Connectors</div>
+  <div class="title">Parts that line up and stay together</div>
+  <div class="sub">Every cut face gets connectors placed automatically: up to four per face, kept clear of walls, starting at the thickest spot. Each one can be retyped, resized or removed. Clearance is per side and is drawn larger than life here.</div>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <pattern id="hatchA" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#4fb3bf" opacity=".22"/><line x1="0" y1="0" x2="0" y2="8" stroke="#4fb3bf" stroke-opacity=".45" stroke-width="2"/></pattern>
+      <pattern id="hatchB" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="8" height="8" fill="#e8a33d" opacity=".22"/><line x1="0" y1="0" x2="0" y2="8" stroke="#e8a33d" stroke-opacity=".45" stroke-width="2"/></pattern>
+    </defs>
+  </svg>
+
+  <div class="grid">
+    <!-- PEG -->
+    <div class="card">
+      <h3>Peg <span class="mono">0.15 mm</span></h3>
+      <svg width="330" height="230" viewBox="0 0 330 230">
+        <!-- part A (top) with peg pointing down -->
+        <rect x="30" y="20" width="270" height="80" fill="url(#hatchA)" stroke="#4fb3bf"/>
+        <rect x="145" y="100" width="40" height="62" fill="#4fb3bf" opacity=".85"/>
+        <!-- part B (bottom) with hole -->
+        <path d="M30 118 H139 V174 H191 V118 H300 V210 H30 Z" fill="url(#hatchB)" stroke="#e8a33d"/>
+        <!-- clearance call-out -->
+        <path d="M139 125 H145" stroke="#ff5a36" stroke-width="2"/>
+        <path d="M118 128 L139 128" stroke="#ff5a36" stroke-width="1"/>
+        <text x="113" y="132" text-anchor="end" font-size="11" fill="#ff5a36">clearance</text>
+        <text x="40" y="44" font-size="12" fill="#d7dde5">part A</text>
+        <text x="40" y="200" font-size="12" fill="#d7dde5">part B</text>
+        <path d="M310 100 V162" stroke="#7f8896"/><path d="M306 100 H314 M306 162 H314" stroke="#7f8896"/>
+        <text x="318" y="135" font-size="11" fill="#7f8896" transform="rotate(90 318 135)" text-anchor="middle">depth</text>
+      </svg>
+      <p>A solid peg grows out of one part; the other gets a matching hole. Nothing extra to print.</p>
+      <ul><li>Diameter scales with the face, up to <b>10 mm</b></li><li>Peg is clipped so it never pokes through a thin neighbour</li></ul>
+    </div>
+
+    <!-- DOWEL -->
+    <div class="card">
+      <h3>Dowel <span class="mono">0.10 mm</span></h3>
+      <svg width="330" height="230" viewBox="0 0 330 230">
+        <path d="M30 20 H300 V100 H191 V46 H139 V100 H30 Z" fill="url(#hatchA)" stroke="#4fb3bf"/>
+        <path d="M30 118 H139 V174 H191 V118 H300 V210 H30 Z" fill="url(#hatchB)" stroke="#e8a33d"/>
+        <rect x="145" y="50" width="40" height="120" rx="3" fill="#d7dde5"/>
+        <text x="165" y="114" text-anchor="middle" font-size="11" fill="#12151b" font-weight="600">pin</text>
+        <text x="40" y="44" font-size="12" fill="#d7dde5">part A</text>
+        <text x="40" y="200" font-size="12" fill="#d7dde5">part B</text>
+        <path d="M139 60 H145" stroke="#ff5a36" stroke-width="2"/>
+        <path d="M118 63 L139 63" stroke="#ff5a36" stroke-width="1"/>
+        <text x="113" y="67" text-anchor="end" font-size="11" fill="#ff5a36">clearance</text>
+      </svg>
+      <p>Both parts get a hole and Dovetail adds a loose pin to the plates. Good when neither side should have a bump.</p>
+      <ul><li>Pin is <b>0.6 mm</b> shorter than the two holes</li><li>Use a printed pin or a cut length of filament or rod</li></ul>
+    </div>
+
+    <!-- DOVETAIL -->
+    <div class="card">
+      <h3>Dovetail <span class="mono">0.25 mm</span></h3>
+      <svg width="330" height="230" viewBox="0 0 330 230">
+        <!-- view looking along the slide direction -->
+        <rect x="30" y="20" width="270" height="80" fill="url(#hatchA)" stroke="#4fb3bf"/>
+        <path d="M147 100 L183 100 L194 158 L136 158 Z" fill="#4fb3bf" opacity=".85"/>
+        <path d="M30 118 H143 L131 168 H199 L187 118 H300 V210 H30 Z" fill="url(#hatchB)" stroke="#e8a33d"/>
+        <path d="M194 158 L210 100" stroke="#7f8896" stroke-dasharray="3 3"/>
+        <path d="M194 158 V104" stroke="#7f8896" stroke-dasharray="3 3"/>
+        <text x="214" y="132" font-size="11" fill="#7f8896">15° flare</text>
+        <circle cx="165" cy="60" r="12" fill="none" stroke="#d7dde5" stroke-width="1.6"/>
+        <circle cx="165" cy="60" r="3" fill="#d7dde5"/>
+        <text x="184" y="64" font-size="11" fill="#d7dde5">slides in this way</text>
+        <text x="40" y="44" font-size="12" fill="#d7dde5">part A</text>
+        <text x="40" y="200" font-size="12" fill="#d7dde5">part B</text>
+        <path d="M131 168 L136 158" stroke="#ff5a36" stroke-width="2"/>
+        <text x="122" y="186" text-anchor="end" font-size="11" fill="#ff5a36">clearance</text>
+      </svg>
+      <p>A flared tenon slides into a slot and can't pull straight out. One per face, centred.</p>
+      <ul><li>Slides vertically when the cut is vertical, so it prints and assembles easily</li><li>Falls back to a peg where the face is too narrow</li></ul>
+    </div>
+  </div>
+
+  <div class="coupon">
+    <svg width="260" height="70" viewBox="0 0 260 70">
+      <rect x="4" y="14" width="252" height="44" rx="4" fill="#3a4150"/>
+      <g fill="#12151b">
+        <circle cx="25" cy="36" r="10.2"/><circle cx="67" cy="36" r="10.4"/><circle cx="109" cy="36" r="10.6"/>
+        <circle cx="151" cy="36" r="10.8"/><circle cx="193" cy="36" r="11"/><circle cx="235" cy="36" r="11.2"/>
+      </g>
+      <g fill="#ff5a36">
+        <rect x="24" y="14" width="2" height="4"/>
+        <rect x="64" y="14" width="2" height="4"/><rect x="68" y="14" width="2" height="4"/>
+        <rect x="104" y="14" width="2" height="4"/><rect x="108" y="14" width="2" height="4"/><rect x="112" y="14" width="2" height="4"/>
+        <rect x="145" y="14" width="2" height="4"/><rect x="149" y="14" width="2" height="4"/><rect x="153" y="14" width="2" height="4"/><rect x="157" y="14" width="2" height="4"/>
+        <rect x="185" y="14" width="2" height="4"/><rect x="189" y="14" width="2" height="4"/><rect x="193" y="14" width="2" height="4"/><rect x="197" y="14" width="2" height="4"/><rect x="201" y="14" width="2" height="4"/>
+        <rect x="226" y="14" width="2" height="4"/><rect x="230" y="14" width="2" height="4"/><rect x="234" y="14" width="2" height="4"/><rect x="238" y="14" width="2" height="4"/><rect x="242" y="14" width="2" height="4"/><rect x="246" y="14" width="2" height="4"/>
+      </g>
+    </svg>
+    <p><b>Not sure about your printer's tolerance?</b> Export the test coupon first: one strip with six holes from 0.05 to 0.30 mm clearance plus the matching key. Count the notches above the hole that fits best and type that value in. It takes a few minutes to print and saves reprinting a big part.</p>
+  </div>
+</div>
